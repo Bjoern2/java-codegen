@@ -1,9 +1,25 @@
+/*
+ * Copyright 2015 Björn Schmitz
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.bjoern2.codegen;
 
 import java.util.List;
 
 public class JavaMethodImpl implements JavaMethod {
 
+	private ClassType type;
 	private JavaAccessType accessType;
 	private boolean _static;
 	private boolean _final;
@@ -14,29 +30,26 @@ public class JavaMethodImpl implements JavaMethod {
 	private List<JavaMethodParameter> parameters;
 	private List<JavaType> _exceptions;
 	private String body;
+	private String comment;
 	
 	@Override
 	public void setName(String name) {
 		this.name = name;
-		
 	}
 
 	@Override
 	public void setAbstract(boolean _abstract) {
 		this._abstract = _abstract;
-		
 	}
 
 	@Override
 	public void setSynchronized(boolean s) {
 		this._synchronized = s;
-		
 	}
 
 	@Override
 	public void setAccessType(JavaAccessType type) {
 		this.accessType = type;
-		
 	}
 
 	@Override
@@ -64,29 +77,37 @@ public class JavaMethodImpl implements JavaMethod {
 	@Override
 	public void write(int tabs, Generator writer) {
 		
-		writer.tab(tabs);
-		if (accessType != null && accessType != JavaAccessType.PACKAGE) {
-			writer.write(accessType.name().toLowerCase());
-			writer.write(" ");
-			
+		if (comment != null && !comment.isEmpty()) {
+			String[] commentLines = comment.split("\\r?\\n");
+			writer.tab(tabs).write("/**").lineBreak();
+			for (String commentLine : commentLines) {
+				writer.tab(tabs).write(" * ").write(commentLine).lineBreak();
+			}
+			writer.tab(tabs).write(" */").lineBreak();
 		}
 		
-		if (_final) {
+		writer.tab(tabs);
+		if (accessType != null && accessType != JavaAccessType.PACKAGE && type == ClassType.CLASS) {
+			writer.write(accessType.name().toLowerCase());
+			writer.write(" ");
+		}
+		
+		if (_final && type == ClassType.CLASS) {
 			writer.write("final");
 			writer.write(" ");
 		}
 		
-		if (_static) {
+		if (_static && type == ClassType.CLASS) {
 			writer.write("static");
 			writer.write(" ");
 		}
 		
-		if (_abstract) {
+		if (_abstract && type == ClassType.CLASS) {
 			writer.write("abstract");
 			writer.write(" ");
 		}
 		
-		if (_synchronized) {
+		if (_synchronized && type == ClassType.CLASS) {
 			writer.write("synchronized");
 			writer.write(" ");
 		}
@@ -121,7 +142,7 @@ public class JavaMethodImpl implements JavaMethod {
 			}
 		}
 		
-		if (_abstract) {
+		if (_abstract || type == ClassType.INTERFACE) {
 			writer.write(";");
 		} else {
 			writer.write(" {").lineBreak();
@@ -141,7 +162,47 @@ public class JavaMethodImpl implements JavaMethod {
 	@Override
 	public void setBody(String body) {
 		this.body = body;
+	}
+
+	@Override
+	public JavaType getReturnType() {
+		return returnType;
+	}
+
+	@Override
+	public List<JavaMethodParameter> getParameters() {
+		return parameters;
+	}
+
+	@Override
+	public List<JavaType> getExceptions() {
+		return _exceptions;
+	}
+
+	@Override
+	public ClassType getType() {
+		return type;
+	}
+
+	@Override
+	public void setType(ClassType type) {
+		this.type = type;
 		
+	}
+
+	@Override
+	public String getBody() {
+		return body;
+	}
+
+	@Override
+	public String getComment() {
+		return comment;
+	}
+
+	@Override
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

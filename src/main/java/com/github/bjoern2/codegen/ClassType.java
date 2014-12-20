@@ -15,20 +15,10 @@
  */
 package com.github.bjoern2.codegen;
 
-import java.util.List;
+public enum ClassType {
 
-public interface JavaType extends GeneratesCode {
-
-	String getName();
-
-	void setName(String name);
-
-	List<JavaType> getGenerics();
-
-	void setGenerics(List<JavaType> generics);
+	CLASS,
+	INTERFACE,
+	ANNOTATION
 	
-	int getArray();
-	
-	void setArray(int level);
-
 }

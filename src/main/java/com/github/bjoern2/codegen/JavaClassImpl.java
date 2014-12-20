@@ -1,63 +1,95 @@
+/*
+ * Copyright 2015 Björn Schmitz
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.bjoern2.codegen;
 
 import java.util.List;
 
 public class JavaClassImpl implements JavaClass {
 	
+	private String comment;
+	private ClassType type = ClassType.CLASS;
 	private JavaAccessType accessType = JavaAccessType.PUBLIC;
 	private String name;
 	private boolean _final = false;
 	private boolean _abstract = false;
 	
+	private JavaType extendsFrom;
+	private List<JavaType> implementsFrom;
+	
 	private List<JavaField> fields;
 	private List<JavaMethod> methods;
 	
 	@Override
-	public void write(int tabs, Generator writer) {
-		writer.tab(tabs).write(((accessType != null && accessType != JavaAccessType.PACKAGE) ? accessType.name().toLowerCase() + " " : "") + "class " + name + " {").lineBreak();
+	public void write(int tabs, Generator g) {
+		if (comment != null && !comment.isEmpty()) {
+			String[] commentLines = comment.split("\\r?\\n");
+			g.tab(tabs).write("/**").lineBreak();
+			for (String commentLine : commentLines) {
+				g.tab(tabs).write(" * ").write(commentLine).lineBreak();
+			}
+			g.tab(tabs).write(" */").lineBreak();
+		}
+		
+		g.tab(tabs);
+		
+		if (accessType != null && accessType != JavaAccessType.PACKAGE) {
+			g.write(accessType.name().toLowerCase());
+			g.write(" ");
+		}
+		
+		if (type == ClassType.INTERFACE) {
+			g.write("interface ");
+		} else if (type == ClassType.ANNOTATION) {
+			g.write("@interface ");
+		} else {
+			g.write("class ");
+		}
+		
+		g.write(name + " {");
+		g.lineBreak();
+		g.lineBreak();
 		
 		// TODO: Add final, abstract
 		
 		if (fields != null) {
 			for (JavaField member : fields) {
-				member.write(tabs + 1, writer);
-				writer.lineBreak();
+				member.write(tabs + 1, g);
+				g.lineBreak();
 			}
 		}
 		
 		if (methods != null) {
 			for (JavaMethod method : methods) {
-				method.write(tabs + 1, writer);
-				writer.lineBreak();
+				method.write(tabs + 1, g);
+				g.lineBreak();
 			}
 		}
 		
-		writer.tab(tabs).write("}").lineBreak();
+		g.tab(tabs).write("}").lineBreak();
 
 	}
 
 	@Override
 	public void setName(String name) {
 		this.name = name;
-		
-	}
-
-	@Override
-	public void setExtendsFrom(String clazzName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void addImplementsFrom(String interfaceName) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void setAccessType(JavaAccessType type) {
-		// TODO Auto-generated method stub
-		
+		this.accessType = type;
 	}
 
 	@Override
@@ -89,8 +121,7 @@ public class JavaClassImpl implements JavaClass {
 
 	@Override
 	public JavaAccessType getAccessType() {
-		// TODO Auto-generated method stub
-		return null;
+		return accessType;
 	}
 
 	@Override
@@ -104,12 +135,6 @@ public class JavaClassImpl implements JavaClass {
 	}
 
 	@Override
-	public String getExtendsFrom() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<JavaMethod> getMethods() {
 		return methods;
 	}
@@ -117,6 +142,44 @@ public class JavaClassImpl implements JavaClass {
 	@Override
 	public List<JavaField> getFields() {
 		return fields;
+	}
+
+	@Override
+	public JavaType getExtendsFrom() {
+		return extendsFrom;
+	}
+
+	@Override
+	public void setExtendsFrom(JavaType type) {
+		this.extendsFrom = type;
+	}
+
+	@Override
+	public List<JavaType> getImplementsFrom() {
+		return implementsFrom;
+	}
+
+	@Override
+	public void setImplementsFrom(List<JavaType> type) {
+		this.implementsFrom = type;
+		
+	}
+
+	@Override
+	public void setType(ClassType type) {
+		this.type = type;
+		
+	}
+
+	@Override
+	public String getComment() {
+		return comment;
+	}
+
+	@Override
+	public void setComment(String comment) {
+		this.comment = comment;
+		
 	}
 
 }
