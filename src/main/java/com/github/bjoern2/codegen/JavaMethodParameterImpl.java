@@ -15,9 +15,12 @@
  */
 package com.github.bjoern2.codegen;
 
+import java.util.List;
+
 
 public class JavaMethodParameterImpl implements JavaMethodParameter {
 
+	private List<JavaAnnotation> annotations;
 	private boolean _final = false;
 	private JavaType type;
 	private String name;
@@ -38,20 +41,27 @@ public class JavaMethodParameterImpl implements JavaMethodParameter {
 	}
 	
 	@Override
-	public void write(int tabs, Generator writer) {
-		writer.tab(tabs);
-		if (_final) {
-			writer.write("final ");
+	public void write(int tabs, Generator g) {
+		g.tab(tabs);
+		
+		if (annotations != null) {
+			for (JavaAnnotation annotation : annotations) {
+				annotation.write(tabs, g);
+				g.write(" ");
+			}
 		}
-		type.write(0, writer);
-		writer.write(" ");
-		writer.write(name);
+		
+		if (_final) {
+			g.write("final ");
+		}
+		type.write(0, g);
+		g.write(" ");
+		g.write(name);
 	}
 
 	@Override
 	public boolean isFinal() {
-		// TODO Auto-generated method stub
-		return false;
+		return _final;
 	}
 
 	@Override
@@ -72,6 +82,17 @@ public class JavaMethodParameterImpl implements JavaMethodParameter {
 	@Override
 	public void setFinal(boolean _final) {
 		this._final = _final;
+	}
+
+	@Override
+	public List<JavaAnnotation> getAnnotations() {
+		return annotations;
+	}
+
+	@Override
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
+		
 	}
 
 }

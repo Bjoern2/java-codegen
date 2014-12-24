@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository name="PersonRepository" dataSource="##default">
+	<query name="findByFirstname" type="SELECT">
+		<sql>
+			SELECT * FROM person WHERE firstname LIKE :firstname
+		</sql>
+		<parameters>
+			<parameter name="firstName" type="String" />
+		</parameters>
+		<mappings>
+			<mapping columnName="id" fieldName="id" fieldType="Long" />
+			<mapping columnName="firstname" fieldName="firstName" fieldType="String" />
+		</mappings>
+	</query>
+</repository>

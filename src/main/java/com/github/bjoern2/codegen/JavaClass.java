@@ -21,6 +21,12 @@ public interface JavaClass extends GeneratesCode {
 
 	void setType(ClassType type);
 	
+	ClassType getType();
+	
+	List<JavaAnnotation> getAnnotations();
+	
+	void setAnnotations(List<JavaAnnotation> annotations);
+	
 	JavaAccessType getAccessType();
 	
 	void setAccessType(JavaAccessType type);

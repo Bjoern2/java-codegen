@@ -15,9 +15,15 @@
  */
 package com.github.bjoern2.codegen;
 
+import java.util.List;
+
 
 public interface JavaMethodParameter extends GeneratesCode {
 
+	List<JavaAnnotation> getAnnotations();
+	
+	void setAnnotations(List<JavaAnnotation> annotations);
+	
 	String getName();
 
 	void setName(String name);

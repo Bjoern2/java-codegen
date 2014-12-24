@@ -20,6 +20,8 @@ import java.util.List;
 public class JavaClassImpl implements JavaClass {
 	
 	private String comment;
+	
+	private List<JavaAnnotation> annotations;
 	private ClassType type = ClassType.CLASS;
 	private JavaAccessType accessType = JavaAccessType.PUBLIC;
 	private String name;
@@ -34,6 +36,7 @@ public class JavaClassImpl implements JavaClass {
 	
 	@Override
 	public void write(int tabs, Generator g) {
+		// /** ... */
 		if (comment != null && !comment.isEmpty()) {
 			String[] commentLines = comment.split("\\r?\\n");
 			g.tab(tabs).write("/**").lineBreak();
@@ -43,8 +46,15 @@ public class JavaClassImpl implements JavaClass {
 			g.tab(tabs).write(" */").lineBreak();
 		}
 		
-		g.tab(tabs);
+		if (annotations != null) {
+			for (JavaAnnotation annotation : annotations) {
+				annotation.write(tabs, g);
+				g.lineBreak();
+			}
+		}
 		
+		// public class Foo {
+		g.tab(tabs);
 		if (accessType != null && accessType != JavaAccessType.PACKAGE) {
 			g.write(accessType.name().toLowerCase());
 			g.write(" ");
@@ -179,6 +189,22 @@ public class JavaClassImpl implements JavaClass {
 	@Override
 	public void setComment(String comment) {
 		this.comment = comment;
+		
+	}
+
+	@Override
+	public ClassType getType() {
+		return type;
+	}
+
+	@Override
+	public List<JavaAnnotation> getAnnotations() {
+		return annotations;
+	}
+
+	@Override
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
 		
 	}
 

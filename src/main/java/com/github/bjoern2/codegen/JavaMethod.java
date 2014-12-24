@@ -19,6 +19,10 @@ import java.util.List;
 
 public interface JavaMethod extends GeneratesCode {
 
+	List<JavaAnnotation> getAnnotations();
+	
+	void setAnnotations(List<JavaAnnotation> annotations);
+	
 	ClassType getType();
 	
 	void setType(ClassType type);

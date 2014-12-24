@@ -15,8 +15,11 @@
  */
 package com.github.bjoern2.codegen;
 
+import java.util.List;
+
 public class JavaFieldImpl implements JavaField {
 
+	private List<JavaAnnotation> annotations;
 	private JavaAccessType accessType = JavaAccessType.PRIVATE;
 	private boolean _volatile;
 	private boolean _final;
@@ -37,19 +40,16 @@ public class JavaFieldImpl implements JavaField {
 	@Override
 	public void setFinal(boolean _final) {
 		this._final = _final;
-		
 	}
 
 	@Override
 	public void setVolatile(boolean _final) {
 		this._final = _final;
-		
 	}
 
 	@Override
 	public void setType(JavaType type) {
 		this.type = type;
-		
 	}
 
 	@Override
@@ -58,16 +58,23 @@ public class JavaFieldImpl implements JavaField {
 	}
 	
 	@Override
-	public void write(int tabs, Generator writer) {
-		writer.tab(tabs);
-		if (accessType != null && accessType != JavaAccessType.PACKAGE) {
-			writer.write(accessType.name().toLowerCase() + " ");
+	public void write(int tabs, Generator g) {
+		if (annotations != null) {
+			for (JavaAnnotation annotation : annotations) {
+				annotation.write(tabs, g);
+				g.lineBreak();
+			}
 		}
-		type.write(0, writer);
-		writer.write(" ");
-		writer.write(name);
-		writer.write(";");
-		writer.lineBreak();
+		
+		g.tab(tabs);
+		if (accessType != null && accessType != JavaAccessType.PACKAGE) {
+			g.write(accessType.name().toLowerCase() + " ");
+		}
+		type.write(0, g);
+		g.write(" ");
+		g.write(name);
+		g.write(";");
+		g.lineBreak();
 	}
 
 	@Override
@@ -108,6 +115,17 @@ public class JavaFieldImpl implements JavaField {
 	@Override
 	public void setStatic(boolean _static) {
 		this._static = _static;
+	}
+
+	@Override
+	public List<JavaAnnotation> getAnnotations() {
+		// TODO Auto-generated method stub
+		return annotations;
+	}
+
+	@Override
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
 		
 	}
 

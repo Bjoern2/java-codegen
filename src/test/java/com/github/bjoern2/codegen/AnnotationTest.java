@@ -1,11 +1,18 @@
 package com.github.bjoern2.codegen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Test;
 
-public class PojoTest {
+import com.github.bjoern2.codegen.util.ImportOrganizer;
+
+public class AnnotationTest {
 
 	@Test
 	public void test() {
@@ -18,12 +25,25 @@ public class PojoTest {
 		
 		
 		JavaAnnotation anRootElement = new JavaAnnotationImpl();
-		anRootElement.setName("XmlRootElement");
+		anRootElement.setName(XmlRootElement.class.getName());
 		anRootElement.setValues(new HashMap<String, Object>());
 		anRootElement.getValues().put("name", "\"address\"");
-		pojo.setAnnotations(Arrays.asList(anRootElement));
+		
+		JavaAnnotation anFoo = new JavaAnnotationImpl("com.bjoern2.test.Foo");
+		anFoo.setValues(new HashMap<String, Object>());
+		
+		List<Object> anBars = new ArrayList<Object>();
+		anBars.add(new JavaAnnotationImpl("com.github.bjoern2.test.Bar"));
+		anBars.add(new JavaAnnotationImpl("com.bjoern2.test.Bar"));
+		anFoo.getValues().put("bars", anBars);
+		
+		pojo.setAnnotations(Arrays.asList(anRootElement, anFoo));
 	
 		JavaField id = new JavaFieldImpl(JavaTypeImpl._long(), "id");
+		JavaAnnotation anId = new JavaAnnotationImpl(XmlElement.class.getName());
+		id.setAnnotations(Arrays.asList(anId));
+		
+		
 		JavaField firstname = new JavaFieldImpl(JavaTypeImpl._String(), "firstname");
 		JavaField lastname = new JavaFieldImpl(JavaTypeImpl._String(), "lastname");
 		pojo.setFields(Arrays.asList(id, firstname, lastname));
@@ -37,6 +57,8 @@ public class PojoTest {
 		pojo.setMethods(Arrays.asList(getId, setId, getFirstname, setFirstname, getLastname, setLastname));
 		
 		
+		ImportOrganizer organizer = new ImportOrganizer();
+		organizer.organize(file);
 
 		
 		StringGenerator writer = new StringGenerator();

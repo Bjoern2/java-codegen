@@ -19,7 +19,8 @@ import java.util.List;
 
 public class JavaMethodImpl implements JavaMethod {
 
-	private ClassType type;
+	private List<JavaAnnotation> annotations;
+	private ClassType type = ClassType.CLASS;
 	private JavaAccessType accessType;
 	private boolean _static;
 	private boolean _final;
@@ -29,7 +30,7 @@ public class JavaMethodImpl implements JavaMethod {
 	private String name;
 	private List<JavaMethodParameter> parameters;
 	private List<JavaType> _exceptions;
-	private String body;
+	private String body = "// TODO Auto-generated method stub";
 	private String comment;
 	
 	@Override
@@ -75,81 +76,88 @@ public class JavaMethodImpl implements JavaMethod {
 	}
 	
 	@Override
-	public void write(int tabs, Generator writer) {
+	public void write(int tabs, Generator g) {
 		
 		if (comment != null && !comment.isEmpty()) {
 			String[] commentLines = comment.split("\\r?\\n");
-			writer.tab(tabs).write("/**").lineBreak();
+			g.tab(tabs).write("/**").lineBreak();
 			for (String commentLine : commentLines) {
-				writer.tab(tabs).write(" * ").write(commentLine).lineBreak();
+				g.tab(tabs).write(" * ").write(commentLine).lineBreak();
 			}
-			writer.tab(tabs).write(" */").lineBreak();
+			g.tab(tabs).write(" */").lineBreak();
 		}
 		
-		writer.tab(tabs);
+		if (annotations != null) {
+			for (JavaAnnotation annotation : annotations) {
+				annotation.write(tabs, g);
+				g.lineBreak();
+			}
+		}
+		
+		g.tab(tabs);
 		if (accessType != null && accessType != JavaAccessType.PACKAGE && type == ClassType.CLASS) {
-			writer.write(accessType.name().toLowerCase());
-			writer.write(" ");
+			g.write(accessType.name().toLowerCase());
+			g.write(" ");
 		}
 		
 		if (_final && type == ClassType.CLASS) {
-			writer.write("final");
-			writer.write(" ");
+			g.write("final");
+			g.write(" ");
 		}
 		
 		if (_static && type == ClassType.CLASS) {
-			writer.write("static");
-			writer.write(" ");
+			g.write("static");
+			g.write(" ");
 		}
 		
 		if (_abstract && type == ClassType.CLASS) {
-			writer.write("abstract");
-			writer.write(" ");
+			g.write("abstract");
+			g.write(" ");
 		}
 		
 		if (_synchronized && type == ClassType.CLASS) {
-			writer.write("synchronized");
-			writer.write(" ");
+			g.write("synchronized");
+			g.write(" ");
 		}
 		
-		returnType.write(0, writer);
-		writer.write(" ");
+		returnType.write(0, g);
+		g.write(" ");
 		
-		writer.write(name);
+		g.write(name);
 		
-		writer.write("(");
+		g.write("(");
 		
 		if (parameters != null && !parameters.isEmpty()) {
 			for (int i = 0; i < parameters.size(); i++) {
 				if (i > 0) {
-					writer.write(", ");
+					g.write(", ");
 				}
 				JavaMethodParameter parameter = parameters.get(i);
-				parameter.write(0, writer);
+				parameter.write(0, g);
 			}
 		}
 		
-		writer.write(")");
+		g.write(")");
 		
 		if (_exceptions != null && !_exceptions.isEmpty()) {
-			writer.write(" throws ");
+			g.write(" throws ");
 			for (int i = 0; i < _exceptions.size(); i++) {
 				if (i > 0) {
-					writer.write(", ");
+					g.write(", ");
 				}
 				JavaType ex = _exceptions.get(i);
-				ex.write(0, writer);
+				ex.write(0, g);
 			}
 		}
 		
 		if (_abstract || type == ClassType.INTERFACE) {
-			writer.write(";");
+			g.write(";");
 		} else {
-			writer.write(" {").lineBreak();
+			g.write(" {").lineBreak();
 			if (body != null && !body.isEmpty()) {
-				writer.tab(tabs + 1).write(body).lineBreak();
+				g.tab(tabs + 1).write(body).lineBreak();
 			}
-			writer.tab(tabs).write("}").lineBreak();
+			g.tab(tabs).write("}").lineBreak();
 		}
 	}
 
@@ -203,6 +211,16 @@ public class JavaMethodImpl implements JavaMethod {
 	@Override
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	@Override
+	public List<JavaAnnotation> getAnnotations() {
+		return annotations;
+	}
+
+	@Override
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.github.bjoern2.codegen.JavaAnnotation;
 import com.github.bjoern2.codegen.JavaClass;
 import com.github.bjoern2.codegen.JavaField;
 import com.github.bjoern2.codegen.JavaFile;
@@ -17,6 +18,7 @@ import com.github.bjoern2.codegen.JavaTypeImpl;
 
 public class ImportOrganizer {
 
+	private String filePackage;
 	private List<JavaType> imports;
 	private List<String> clazzNames;
 	
@@ -35,6 +37,8 @@ public class ImportOrganizer {
 		imports = new ArrayList<JavaType>();
 		clazzNames = new ArrayList<String>();
 		
+		filePackage = file.getPackage() == null ? "" : file.getPackage();
+		
 		if (file.getImports() != null) {
 			imports.addAll(file.getImports());
 		}
@@ -47,11 +51,20 @@ public class ImportOrganizer {
 	}
 	
 	private void organize(JavaClass clazz) {
-		for (JavaField field : clazz.getFields()) {
-			organize(field);
+		if (clazz.getAnnotations() != null) {
+			for (JavaAnnotation ann : clazz.getAnnotations()) {
+				organize(ann);
+			}
 		}
-		for (JavaMethod method : clazz.getMethods()) {
-			organize(method);
+		if (clazz.getFields() != null) {
+			for (JavaField field : clazz.getFields()) {
+				organize(field);
+			}
+		}
+		if (clazz.getMethods() != null) {
+			for (JavaMethod method : clazz.getMethods()) {
+				organize(method);
+			}
 		}
 	}
 	
@@ -59,6 +72,13 @@ public class ImportOrganizer {
 		if (field == null) {
 			return;
 		}
+		
+		if (field.getAnnotations() != null) {
+			for (JavaAnnotation ann : field.getAnnotations()) {
+				organize(ann);
+			}
+		}
+		
 		organize(field.getType());
 	}
 	
@@ -66,6 +86,13 @@ public class ImportOrganizer {
 		if (method == null) {
 			return;
 		}
+		
+		if (method.getAnnotations() != null) {
+			for (JavaAnnotation ann : method.getAnnotations()) {
+				organize(ann);
+			}
+		}
+		
 		organize(method.getReturnType());
 		
 		if (method.getExceptions() != null) {
@@ -76,10 +103,18 @@ public class ImportOrganizer {
 		
 		if (method.getParameters() != null) {
 			for (JavaMethodParameter para : method.getParameters()) {
-				organize(para.getType());
+				organize(para);
 			}
 		}
-		
+	}
+	
+	private void organize(JavaMethodParameter para) {
+		organize(para.getType());
+		if (para.getAnnotations() != null) {
+			for (JavaAnnotation ann : para.getAnnotations()) {
+				organize(ann);
+			}
+		}
 	}
 	
 	private void organize(JavaType type) {
@@ -120,6 +155,50 @@ public class ImportOrganizer {
 		type.setName(clazzName);
 	}
 	
+	private void organize(JavaAnnotation annotation) {
+		if (annotation == null) {
+			return;
+		}
+		
+		if (annotation.getValues() != null) {
+			for (Object value : annotation.getValues().values()) {
+				if (value instanceof JavaAnnotation) {
+					organize((JavaAnnotation)value);
+				} else if (value instanceof List) {
+					List<Object> list = (List)value;
+					for (Object entry : list) {
+						if (entry instanceof JavaAnnotation) {
+							organize((JavaAnnotation)entry);
+						}
+					}
+				}
+			}
+		}
+		
+		// Check for internal import:
+		final String packageName = extractPackage(annotation.getName());
+		if (StringUtils.isBlank(packageName)) {
+			return;
+		}
+		
+		// Class with the same name already imported?
+		if (hasNameConflict(annotation.getName())) {
+			return;
+		}
+		
+		final String clazzName = extractClazzName(annotation.getName());
+		if (!alreadyImported(annotation.getName())) {
+			clazzNames.add(annotation.getName());
+			JavaType imp = new JavaTypeImpl();
+			imp.setName(annotation.getName());
+			imp.setGenerics(new ArrayList<JavaType>());
+			imp.setArray(0);
+			imports.add(imp);
+		}
+		
+		annotation.setName(clazzName);
+	}
+	
 	
 	private String extractClazzName(String clazzWithPackage) {
 		int idxStart = clazzWithPackage.lastIndexOf(".");
@@ -152,5 +231,10 @@ public class ImportOrganizer {
 	
 	private boolean alreadyImported(String name) {
 		return clazzNames.contains(name);
+	}
+	
+	private boolean ownPackage(String name) {
+		String pack = extractPackage(name);
+		return filePackage.equals(pack);
 	}
 }
