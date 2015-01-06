@@ -1,6 +1,6 @@
 package com.github.bjoern2.codegen;
 
-import java.util.Map;
+import java.util.List;
 
 public interface JavaAnnotation extends GeneratesCode {
 
@@ -8,7 +8,7 @@ public interface JavaAnnotation extends GeneratesCode {
 	
 	void setName(String name);
 	
-	Map<String, Object> getValues();
+	List<JavaAnnotationArgument> getArguments();
 	
-	void setValues(Map<String, Object> values);
+	void setArguments(List<JavaAnnotationArgument> arguments);
 }

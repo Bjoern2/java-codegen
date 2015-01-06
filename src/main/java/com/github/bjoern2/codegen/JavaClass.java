@@ -39,6 +39,10 @@ public interface JavaClass extends GeneratesCode {
 	
 	void setFinal(boolean _final);
 	
+	boolean isStrictfp();
+	
+	void setStrictfp(boolean _strictfp);
+	
 	String getName();
 	
 	void setName(String name);

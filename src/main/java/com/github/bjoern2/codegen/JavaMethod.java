@@ -27,15 +27,33 @@ public interface JavaMethod extends GeneratesCode {
 	
 	void setType(ClassType type);
 	
+	String getName();
+	
 	void setName(String name);
+	
+	boolean isAbstract();
 	
 	void setAbstract(boolean a);
 	
+	boolean isSynchronized();
+	
 	void setSynchronized(boolean s);
+	
+	boolean isStatic();
 	
 	void setStatic(boolean s);
 	
+	boolean isFinal();
+	
 	void setFinal(boolean f);
+	
+	boolean isStrictfp();
+	
+	void setStrictfp(boolean _strictfp);
+	
+	boolean isNative();
+	
+	void setNative(boolean _native);
 	
 	void setAccessType(JavaAccessType type);
 	

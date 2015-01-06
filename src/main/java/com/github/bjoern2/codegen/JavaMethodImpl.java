@@ -26,12 +26,14 @@ public class JavaMethodImpl implements JavaMethod {
 	private boolean _final;
 	private boolean _synchronized;
 	private boolean _abstract;
+	private boolean _native;
 	private JavaType returnType;
 	private String name;
 	private List<JavaMethodParameter> parameters;
 	private List<JavaType> _exceptions;
 	private String body = "// TODO Auto-generated method stub";
 	private String comment;
+	private boolean _strictfp;
 	
 	@Override
 	public void setName(String name) {
@@ -100,6 +102,10 @@ public class JavaMethodImpl implements JavaMethod {
 			g.write(" ");
 		}
 		
+		if (_native) {
+			g.write("native ");
+		}
+		
 		if (_final && type == ClassType.CLASS) {
 			g.write("final");
 			g.write(" ");
@@ -150,7 +156,7 @@ public class JavaMethodImpl implements JavaMethod {
 			}
 		}
 		
-		if (_abstract || type == ClassType.INTERFACE) {
+		if (_abstract || _native ||  type == ClassType.INTERFACE) {
 			g.write(";");
 		} else {
 			g.write(" {").lineBreak();
@@ -221,6 +227,51 @@ public class JavaMethodImpl implements JavaMethod {
 	@Override
 	public void setAnnotations(List<JavaAnnotation> annotations) {
 		this.annotations = annotations;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public boolean isAbstract() {
+		return _abstract;
+	}
+
+	@Override
+	public boolean isSynchronized() {
+		return _synchronized;
+	}
+
+	@Override
+	public boolean isStatic() {
+		return _static;
+	}
+
+	@Override
+	public boolean isFinal() {
+		return _final;
+	}
+
+	@Override
+	public boolean isStrictfp() {
+		return _strictfp;
+	}
+
+	@Override
+	public void setStrictfp(boolean _strictfp) {
+		this._strictfp = _strictfp;
+	}
+
+	@Override
+	public boolean isNative() {
+		return _native;
+	}
+
+	@Override
+	public void setNative(boolean _native) {
+		this._native = _native;
 	}
 
 }

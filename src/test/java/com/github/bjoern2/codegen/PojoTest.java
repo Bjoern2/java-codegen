@@ -1,7 +1,6 @@
 package com.github.bjoern2.codegen;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -16,12 +15,6 @@ public class PojoTest {
 		pojo.setName("Address");
 		file.setClazz(pojo);
 		
-		
-		JavaAnnotation anRootElement = new JavaAnnotationImpl();
-		anRootElement.setName("XmlRootElement");
-		anRootElement.setValues(new HashMap<String, Object>());
-		anRootElement.getValues().put("name", "\"address\"");
-		pojo.setAnnotations(Arrays.asList(anRootElement));
 	
 		JavaField id = new JavaFieldImpl(JavaTypeImpl._long(), "id");
 		JavaField firstname = new JavaFieldImpl(JavaTypeImpl._String(), "firstname");

@@ -2,7 +2,6 @@ package com.github.bjoern2.codegen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -26,16 +25,16 @@ public class AnnotationTest {
 		
 		JavaAnnotation anRootElement = new JavaAnnotationImpl();
 		anRootElement.setName(XmlRootElement.class.getName());
-		anRootElement.setValues(new HashMap<String, Object>());
-		anRootElement.getValues().put("name", "\"address\"");
+		anRootElement.setArguments(new ArrayList<JavaAnnotationArgument>());
+		anRootElement.getArguments().add(new JavaAnnotationArgumentImpl("name", "\"address\""));
 		
 		JavaAnnotation anFoo = new JavaAnnotationImpl("com.bjoern2.test.Foo");
-		anFoo.setValues(new HashMap<String, Object>());
+		anFoo.setArguments(new ArrayList<JavaAnnotationArgument>());
 		
 		List<Object> anBars = new ArrayList<Object>();
 		anBars.add(new JavaAnnotationImpl("com.github.bjoern2.test.Bar"));
 		anBars.add(new JavaAnnotationImpl("com.bjoern2.test.Bar"));
-		anFoo.getValues().put("bars", anBars);
+		anFoo.getArguments().add(new JavaAnnotationArgumentImpl("bars", anBars));
 		
 		pojo.setAnnotations(Arrays.asList(anRootElement, anFoo));
 	

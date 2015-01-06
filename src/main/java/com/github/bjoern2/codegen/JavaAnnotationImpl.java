@@ -7,7 +7,8 @@ import java.util.Map.Entry;
 public class JavaAnnotationImpl implements JavaAnnotation {
 
 	private String name;
-	private Map<String, Object> values;
+//	private Map<String, Object> values;
+	private List<JavaAnnotationArgument> arguments;
 
 	public JavaAnnotationImpl() {
 		super();
@@ -18,10 +19,10 @@ public class JavaAnnotationImpl implements JavaAnnotation {
 		this.name = name;
 	}
 
-	public JavaAnnotationImpl(String name, Map<String, Object> values) {
+	public JavaAnnotationImpl(String name, List<JavaAnnotationArgument> arguments) {
 		super();
 		this.name = name;
-		this.values = values;
+		this.arguments = arguments;
 	}
 
 	@Override
@@ -33,30 +34,20 @@ public class JavaAnnotationImpl implements JavaAnnotation {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	@Override
-	public Map<String, Object> getValues() {
-		return values;
-	}
-
-	@Override
-	public void setValues(Map<String, Object> values) {
-		this.values = values;
-	}
 	
 	@Override
 	public void write(int tabs, Generator g) {
 		g.tab(tabs);
 		g.write("@" + name);
-		if (values != null && !values.isEmpty()) {
+		if (arguments != null && !arguments.isEmpty()) {
 			g.write("(");
 			
 			int i = 0;
-			for (Entry<String, Object> entry : values.entrySet()) {
+			for (JavaAnnotationArgument entry : arguments) {
 				if (i > 0) {
 					g.write(", ");
 				}
-				g.write(entry.getKey() + " = ");
+				g.write(entry.getName() + " = ");
 				if (entry.getValue() instanceof JavaAnnotation) {
 					JavaAnnotation a = (JavaAnnotation)entry.getValue();
 					a.write(0, g);
@@ -87,6 +78,16 @@ public class JavaAnnotationImpl implements JavaAnnotation {
 			g.write(")");
 		}
 		
+	}
+
+	@Override
+	public List<JavaAnnotationArgument> getArguments() {
+		return arguments;
+	}
+
+	@Override
+	public void setArguments(List<JavaAnnotationArgument> arguments) {
+		this.arguments = arguments;
 	}
 
 }

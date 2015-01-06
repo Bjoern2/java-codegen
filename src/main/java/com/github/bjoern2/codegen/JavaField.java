@@ -27,9 +27,13 @@ public interface JavaField extends GeneratesCode {
 
 	boolean isFinal();
 
-	void setVolatile(boolean _final);
+	void setVolatile(boolean _volatile);
 
 	boolean isVolatile();
+	
+	void setTransient(boolean _transient);
+	
+	boolean isTransient();
 
 	void setType(JavaType type);
 
@@ -47,4 +51,8 @@ public interface JavaField extends GeneratesCode {
 	
 	void setStatic(boolean _static);
 
+	Object getValue();
+	
+	void setValue(Object value);
+	
 }

@@ -27,6 +27,8 @@ public class JavaClassImpl implements JavaClass {
 	private String name;
 	private boolean _final = false;
 	private boolean _abstract = false;
+	private boolean _static = false;
+	private boolean _strictfp = false;
 	
 	private JavaType extendsFrom;
 	private List<JavaType> implementsFrom;
@@ -60,6 +62,22 @@ public class JavaClassImpl implements JavaClass {
 			g.write(" ");
 		}
 		
+		if (_abstract && type == ClassType.CLASS) {
+			g.write("abstract ");
+		}
+		
+		if (_static && type == ClassType.CLASS) {
+			g.write("static ");
+		}
+		
+		if (_final && type == ClassType.CLASS) {
+			g.write("final ");
+		}
+		
+		if (_strictfp && type == ClassType.CLASS) {
+			g.write("strictfp ");
+		}
+		
 		if (type == ClassType.INTERFACE) {
 			g.write("interface ");
 		} else if (type == ClassType.ANNOTATION) {
@@ -71,8 +89,6 @@ public class JavaClassImpl implements JavaClass {
 		g.write(name + " {");
 		g.lineBreak();
 		g.lineBreak();
-		
-		// TODO: Add final, abstract
 		
 		if (fields != null) {
 			for (JavaField member : fields) {
@@ -205,7 +221,16 @@ public class JavaClassImpl implements JavaClass {
 	@Override
 	public void setAnnotations(List<JavaAnnotation> annotations) {
 		this.annotations = annotations;
-		
+	}
+
+	@Override
+	public boolean isStrictfp() {
+		return _strictfp;
+	}
+
+	@Override
+	public void setStrictfp(boolean _strictfp) {
+		this._strictfp = _strictfp;
 	}
 
 }

@@ -24,8 +24,10 @@ public class JavaFieldImpl implements JavaField {
 	private boolean _volatile;
 	private boolean _final;
 	private boolean _static;
+	private boolean _transient;
 	private JavaType type;
 	private String name;
+	private Object value;
 	
 	public JavaFieldImpl() {
 		super();
@@ -43,8 +45,8 @@ public class JavaFieldImpl implements JavaField {
 	}
 
 	@Override
-	public void setVolatile(boolean _final) {
-		this._final = _final;
+	public void setVolatile(boolean _volatile) {
+		this._volatile = _volatile;
 	}
 
 	@Override
@@ -70,9 +72,27 @@ public class JavaFieldImpl implements JavaField {
 		if (accessType != null && accessType != JavaAccessType.PACKAGE) {
 			g.write(accessType.name().toLowerCase() + " ");
 		}
+		
+		if (_static) {
+			g.write("static ");
+		}
+		
+		if (_volatile) {
+			g.write("volatile ");
+		}
+		
+		if (_final) {
+			g.write("final ");
+		}
+		
 		type.write(0, g);
 		g.write(" ");
 		g.write(name);
+		
+		if (value != null) {
+			g.write(" = " + value);
+		}
+		
 		g.write(";");
 		g.lineBreak();
 	}
@@ -119,14 +139,32 @@ public class JavaFieldImpl implements JavaField {
 
 	@Override
 	public List<JavaAnnotation> getAnnotations() {
-		// TODO Auto-generated method stub
 		return annotations;
 	}
 
 	@Override
 	public void setAnnotations(List<JavaAnnotation> annotations) {
 		this.annotations = annotations;
-		
+	}
+
+	@Override
+	public Object getValue() {
+		return value;
+	}
+
+	@Override
+	public void setValue(Object value) {
+		this.value = value;
+	}
+
+	@Override
+	public void setTransient(boolean _transient) {
+		this._transient = _transient;
+	}
+
+	@Override
+	public boolean isTransient() {
+		return _transient;
 	}
 
 }

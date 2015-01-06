@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.bjoern2.codegen.JavaAnnotation;
+import com.github.bjoern2.codegen.JavaAnnotationArgument;
 import com.github.bjoern2.codegen.JavaClass;
 import com.github.bjoern2.codegen.JavaField;
 import com.github.bjoern2.codegen.JavaFile;
@@ -160,8 +161,9 @@ public class ImportOrganizer {
 			return;
 		}
 		
-		if (annotation.getValues() != null) {
-			for (Object value : annotation.getValues().values()) {
+		if (annotation.getArguments() != null) {
+			for (JavaAnnotationArgument arg : annotation.getArguments()) {
+				Object value = arg.getValue();
 				if (value instanceof JavaAnnotation) {
 					organize((JavaAnnotation)value);
 				} else if (value instanceof List) {
