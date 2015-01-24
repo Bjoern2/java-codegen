@@ -11,6 +11,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "entities")
 public class Entities {
 
+	@XmlElement(name = "package")
+	private String _package;
+	
 	@XmlElement(name = "entity")
 	private List<Entity> entities;
 
@@ -20,6 +23,14 @@ public class Entities {
 
 	public void setEntities(List<Entity> entities) {
 		this.entities = entities;
+	}
+
+	public String getPackage() {
+		return _package;
+	}
+
+	public void setPackage(String _package) {
+		this._package = _package;
 	}
 	
 }

@@ -27,7 +27,6 @@ public class JavaClassImpl implements JavaClass {
 	private String name;
 	private boolean _final = false;
 	private boolean _abstract = false;
-	private boolean _static = false;
 	private boolean _strictfp = false;
 	
 	private JavaType extendsFrom;
@@ -66,9 +65,9 @@ public class JavaClassImpl implements JavaClass {
 			g.write("abstract ");
 		}
 		
-		if (_static && type == ClassType.CLASS) {
-			g.write("static ");
-		}
+//		if (_static && type == ClassType.CLASS) {
+//			g.write("static ");
+//		}
 		
 		if (_final && type == ClassType.CLASS) {
 			g.write("final ");

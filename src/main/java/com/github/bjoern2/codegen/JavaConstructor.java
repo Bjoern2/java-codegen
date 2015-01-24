@@ -17,47 +17,13 @@ package com.github.bjoern2.codegen;
 
 import java.util.List;
 
-public interface JavaMethod extends HasAnnotations, GeneratesCode {
-	
-	ClassType getType();
-	
-	void setType(ClassType type);
+public interface JavaConstructor extends HasAnnotations, GeneratesCode {
 	
 	String getName();
 	
 	void setName(String name);
 	
-	boolean isAbstract();
-	
-	void setAbstract(boolean a);
-	
-	boolean isSynchronized();
-	
-	void setSynchronized(boolean s);
-	
-	boolean isStatic();
-	
-	void setStatic(boolean s);
-	
-	boolean isFinal();
-	
-	void setFinal(boolean f);
-	
-	boolean isStrictfp();
-	
-	void setStrictfp(boolean _strictfp);
-	
-	boolean isNative();
-	
-	void setNative(boolean _native);
-
-	JavaAccessType getAccessType(); 
-	
 	void setAccessType(JavaAccessType type);
-	
-	JavaType getReturnType();
-	
-	void setReturnType(JavaType type);
 	
 	List<JavaMethodParameter> getParameters();
 	

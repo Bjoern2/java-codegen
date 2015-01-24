@@ -1,13 +1,20 @@
 package com.github.bjoern2.codegen.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.github.bjoern2.codegen.JavaAccessType;
+import com.github.bjoern2.codegen.JavaAnnotation;
 import com.github.bjoern2.codegen.JavaField;
 import com.github.bjoern2.codegen.JavaFieldImpl;
 
 public class JavaFieldBuilder extends AbstractBuilder<JavaClassBuilder, JavaField>{
 
+	private List<JavaAnnotationBuilder<JavaFieldBuilder>> annotations = new ArrayList<JavaAnnotationBuilder<JavaFieldBuilder>>();
+
+	
 	private JavaAccessType accessType = JavaAccessType.PRIVATE;
 	private boolean _static = false;
 	private boolean _final = false;
@@ -70,10 +77,23 @@ public class JavaFieldBuilder extends AbstractBuilder<JavaClassBuilder, JavaFiel
 		this.value = "\"" + StringEscapeUtils.escapeJava(value) + "\"";
 		return this;
 	}
+	
+	public JavaAnnotationBuilder<JavaFieldBuilder> beginAnnotation() {
+		JavaAnnotationBuilder<JavaFieldBuilder> b = new JavaAnnotationBuilder<JavaFieldBuilder>(this);
+		annotations.add(b);
+		return b;
+	}
 
 	@Override
 	public JavaField build() {
 		JavaField f = new JavaFieldImpl();
+		f.setAnnotations(new ArrayList<JavaAnnotation>());
+		if (annotations != null) {
+			for (JavaAnnotationBuilder<JavaFieldBuilder> b : annotations) {
+				f.getAnnotations().add(b.build());
+			}
+		}
+		
 		f.setName(name);
 		f.setAccessType(accessType);
 		f.setFinal(_final);

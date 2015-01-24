@@ -274,4 +274,9 @@ public class JavaMethodImpl implements JavaMethod {
 		this._native = _native;
 	}
 
+	@Override
+	public JavaAccessType getAccessType() {
+		return accessType;
+	}
+
 }

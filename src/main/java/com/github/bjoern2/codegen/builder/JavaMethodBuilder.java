@@ -14,6 +14,7 @@ public class JavaMethodBuilder extends AbstractBuilder<JavaClassBuilder, JavaMet
 	private String name;
 	private JavaTypeBuilder<JavaMethodBuilder> returnType;
 	private List<JavaMethodParameterBuilder> parameters = new ArrayList<JavaMethodParameterBuilder>();
+	private String body;
 	
 	public JavaMethodBuilder(JavaClassBuilder parent) {
 		super(parent);
@@ -40,6 +41,11 @@ public class JavaMethodBuilder extends AbstractBuilder<JavaClassBuilder, JavaMet
 		parameters.add(p);
 		return p;
 	}
+	
+	public JavaMethodBuilder withBody(String body) {
+		this.body = body;
+		return this;
+	}
 
 	@Override
 	public JavaMethod build() {
@@ -53,6 +59,7 @@ public class JavaMethodBuilder extends AbstractBuilder<JavaClassBuilder, JavaMet
 				m.getParameters().add(b.build());
 			}
 		}
+		m.setBody(body);
 		return m;
 	}
 

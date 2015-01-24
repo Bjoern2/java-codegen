@@ -15,13 +15,8 @@
  */
 package com.github.bjoern2.codegen;
 
-import java.util.List;
 
-public interface JavaField extends GeneratesCode {
-
-	List<JavaAnnotation> getAnnotations();
-	
-	void setAnnotations(List<JavaAnnotation> annotations);
+public interface JavaField extends HasAnnotations, GeneratesCode {
 	
 	void setFinal(boolean _final);
 
