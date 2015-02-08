@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.bjoern2.codegen.ClassType;
 import com.github.bjoern2.codegen.Generator;
+import com.github.bjoern2.codegen.GeneratorFactory;
 import com.github.bjoern2.codegen.JavaAccessType;
 import com.github.bjoern2.codegen.JavaAnnotation;
 import com.github.bjoern2.codegen.JavaClass;
@@ -17,14 +18,18 @@ import com.github.bjoern2.codegen.JavaType;
 public class JavaMarshaller implements Marshaller<JavaPackage> {
 
 	@Override
-	public void marshal(JavaPackage model, Generator g) {
+	public void marshal(JavaPackage model, GeneratorFactory factory) {
 		List<JavaClass> clazzes = model.getClazzes();
 		for (JavaClass c : clazzes) {
+			Generator g = factory.newGenerator(model.getName().replace(".", "/") + "/" + model.getName() + ".java");
 			marshalClass(c, g, 0);
+			g.close();
 		}
 		List<JavaInterface> interfaces = model.getInterfaces();
 		for (JavaInterface i : interfaces) {
+			Generator g = factory.newGenerator(model.getName().replace(".", "/") + "/" + model.getName() + ".java");
 			marshalInterface(i, g, 0);
+			g.close();
 		}
 		// TODO Auto-generated method stub
 		

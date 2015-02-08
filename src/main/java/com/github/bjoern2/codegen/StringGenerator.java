@@ -15,6 +15,7 @@
  */
 package com.github.bjoern2.codegen;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -83,6 +84,12 @@ public class StringGenerator implements Generator {
 	@Override
 	public String toString() {
 		return w.toString();
+	}
+
+	@Override
+	public void close() throws IOException {
+		w.close();
+		
 	}
 
 }

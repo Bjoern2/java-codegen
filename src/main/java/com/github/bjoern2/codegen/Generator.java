@@ -29,4 +29,6 @@ public interface Generator {
 	
 	Generator lineBreak();
 	
+	void close();
+	
 }
