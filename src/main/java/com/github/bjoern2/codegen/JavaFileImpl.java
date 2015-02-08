@@ -22,14 +22,13 @@ import org.apache.commons.lang3.StringUtils;
 
 public class JavaFileImpl implements JavaFile {
 
-
 	private String comment;
 	
 	private String _package;
 	
 	private List<JavaType> imports;
 	
-	private JavaClass clazz;
+	private JavaDefinition definition;
 
 	@Override
 	public void setComment(String comment) {
@@ -60,8 +59,8 @@ public class JavaFileImpl implements JavaFile {
 			writer.lineBreak();
 		}
 		
-		if (clazz != null) {
-			clazz.write(tabs, writer);
+		if (definition != null) {
+			definition.write(tabs, writer);
 			writer.lineBreak();
 		}
 		
@@ -88,18 +87,19 @@ public class JavaFileImpl implements JavaFile {
 	}
 
 	@Override
-	public JavaClass getClazz() {
-		return clazz;
-	}
-
-	@Override
-	public void setClazz(JavaClass clazz) {
-		this.clazz = clazz;
-	}
-
-	@Override
 	public String getComment() {
 		return comment;
+	}
+
+	@Override
+	public JavaDefinition getDefinition() {
+		return definition;
+	}
+
+	@Override
+	public void setDefinition(JavaDefinition definition) {
+		this.definition = definition;
+		
 	}
 
 }

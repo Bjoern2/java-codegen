@@ -19,8 +19,6 @@ import java.util.List;
 
 public interface JavaFile extends GeneratesCode {
 
-	void setComment(String comment);
-	
 	String getPackage();
 
 	void setPackage(String _package);
@@ -29,10 +27,12 @@ public interface JavaFile extends GeneratesCode {
 
 	void setImports(List<JavaType> imports);
 
-	JavaClass getClazz();
-
-	void setClazz(JavaClass clazz);
+	JavaDefinition getDefinition();
+	
+	void setDefinition(JavaDefinition definition);
 
 	String getComment();
+	
+	void setComment(String comment);
 	
 }

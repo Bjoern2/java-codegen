@@ -8,16 +8,8 @@ public interface JavaPackage {
 	
 	void setName(String name);
 	
-	List<JavaClass> getClazzes();
+	List<JavaFile> getFiles();
 	
-	void setClazzes(List<JavaClass> clazzes);
-	
-	List<JavaInterface> getInterfaces();
-	
-	void setInterfaces(List<JavaInterface> interfaces);
-	
-	List<JavaEnum> getEnums();
-	
-	void setEnums(List<JavaEnum> enums);
+	void setFiles(List<JavaFile> files);
 	
 }

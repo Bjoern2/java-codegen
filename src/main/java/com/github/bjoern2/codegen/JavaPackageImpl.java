@@ -5,9 +5,7 @@ import java.util.List;
 public class JavaPackageImpl implements JavaPackage {
 
 	private String name;
-	private List<JavaClass> clazzes;
-	private List<JavaInterface> interfaces;
-	private List<JavaEnum> enums;
+	private List<JavaFile> files;
 	
 	@Override
 	public String getName() {
@@ -20,33 +18,14 @@ public class JavaPackageImpl implements JavaPackage {
 	}
 
 	@Override
-	public List<JavaClass> getClazzes() {
-		return clazzes;
+	public List<JavaFile> getFiles() {
+		return files;
 	}
 
 	@Override
-	public void setClazzes(List<JavaClass> clazzes) {
-		this.clazzes = clazzes;
+	public void setFiles(List<JavaFile> files) {
+		this.files = files;
 	}
 
-	@Override
-	public List<JavaInterface> getInterfaces() {
-		return interfaces;
-	}
-
-	@Override
-	public void setInterfaces(List<JavaInterface> interfaces) {
-		this.interfaces = interfaces;
-	}
-
-	@Override
-	public List<JavaEnum> getEnums() {
-		return enums;
-	}
-
-	@Override
-	public void setEnums(List<JavaEnum> enums) {
-		this.enums = enums;
-	}
 
 }

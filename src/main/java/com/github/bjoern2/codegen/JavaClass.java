@@ -17,7 +17,7 @@ package com.github.bjoern2.codegen;
 
 import java.util.List;
 
-public interface JavaClass extends GeneratesCode {
+public interface JavaClass extends JavaDefinition, GeneratesCode {
 
 	void setType(ClassType type);
 	

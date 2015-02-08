@@ -36,7 +36,7 @@ public class JavaFileWriter {
 		javaFile.setPackage(basePackage);
 		
 		String packagePath = basePackage.replace(".", "/");
-		String filename = javaFile.getClazz().getName() + ".java";
+		String filename = javaFile.getDefinition().getName() + ".java";
 		
 		String pathname = FilenameUtils.concat(basePath, packagePath);
 		File dir = new File(pathname);
