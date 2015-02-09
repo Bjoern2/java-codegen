@@ -14,7 +14,7 @@ public class JavaFileWriterTest {
 		
 		JavaClass clazz = new JavaClassImpl();
 		clazz.setName("HelloWorldApp");
-		f.setClazz(clazz);
+		f.setDefinition(clazz);
 		
 		List<JavaMethod> methods = new ArrayList<JavaMethod>();
 		clazz.setMethods(methods);

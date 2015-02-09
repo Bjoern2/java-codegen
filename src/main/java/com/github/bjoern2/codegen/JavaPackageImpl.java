@@ -4,8 +4,10 @@ import java.util.List;
 
 public class JavaPackageImpl implements JavaPackage {
 
+	private String comment;
 	private String name;
-	private List<JavaFile> files;
+	private List<JavaAnnotation> annotations;
+	
 	
 	@Override
 	public String getName() {
@@ -18,13 +20,30 @@ public class JavaPackageImpl implements JavaPackage {
 	}
 
 	@Override
-	public List<JavaFile> getFiles() {
-		return files;
+	public List<JavaAnnotation> getAnnotations() {
+		return annotations;
 	}
 
 	@Override
-	public void setFiles(List<JavaFile> files) {
-		this.files = files;
+	public void setAnnotations(List<JavaAnnotation> annotations) {
+		this.annotations = annotations;
+	}
+
+	@Override
+	public void write(int tabs, Generator generator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getComment() {
+		// TODO Auto-generated method stub
+		return comment;
+	}
+
+	@Override
+	public void setComment() {
+		this.comment = comment;
 	}
 
 

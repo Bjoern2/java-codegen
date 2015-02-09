@@ -13,7 +13,7 @@ public class PojoTest {
 		
 		JavaClass pojo = new JavaClassImpl();
 		pojo.setName("Address");
-		file.setClazz(pojo);
+		file.setDefinition(pojo);
 		
 	
 		JavaField id = new JavaFieldImpl(JavaTypeImpl._long(), "id");

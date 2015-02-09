@@ -87,9 +87,8 @@ public class StringGenerator implements Generator {
 	}
 
 	@Override
-	public void close() throws IOException {
-		w.close();
-		
+	public void close() {
+
 	}
 
 }

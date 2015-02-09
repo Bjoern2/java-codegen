@@ -19,7 +19,7 @@ public class InterfaceTest {
 		clazz.setName("IHelloWorld");
 		clazz.setType(ClassType.INTERFACE);
 		clazz.setComment("Interface for a hello world program.");
-		f.setClazz(clazz);
+		f.setDefinition(clazz);
 		
 		List<JavaMethod> methods = new ArrayList<JavaMethod>();
 		clazz.setMethods(methods);

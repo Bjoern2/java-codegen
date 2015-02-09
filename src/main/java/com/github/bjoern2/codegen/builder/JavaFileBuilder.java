@@ -24,7 +24,7 @@ public class JavaFileBuilder implements Builder<JavaFile> {
 		JavaFile f = new JavaFileImpl();
 		f.setPackage(_package);
 		if (clazz != null) {
-			f.setClazz(clazz.build());
+			f.setDefinition(clazz.build());
 		}
 		return f;
 	}

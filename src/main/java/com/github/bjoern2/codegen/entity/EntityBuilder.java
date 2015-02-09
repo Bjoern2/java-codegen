@@ -44,7 +44,7 @@ public class EntityBuilder {
 			clazz.setFields(fields);
 			clazz.setMethods(methods);
 			
-			file.setClazz(clazz);
+			file.setDefinition(clazz);
 			
 			ImportOrganizer organizer = new ImportOrganizer();
 			organizer.organize(file);

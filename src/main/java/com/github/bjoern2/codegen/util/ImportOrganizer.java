@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.github.bjoern2.codegen.JavaAnnotation;
 import com.github.bjoern2.codegen.JavaAnnotationArgument;
 import com.github.bjoern2.codegen.JavaClass;
+import com.github.bjoern2.codegen.JavaDefinition;
 import com.github.bjoern2.codegen.JavaField;
 import com.github.bjoern2.codegen.JavaFile;
 import com.github.bjoern2.codegen.JavaMethod;
@@ -44,11 +45,18 @@ public class ImportOrganizer {
 			imports.addAll(file.getImports());
 		}
 		
-		organize(file.getClazz());
+		organize(file.getDefinition());
 		
 		Collections.sort(imports, new ImportComparator());
 		
 		file.setImports(imports);
+	}
+	
+	private void organize(JavaDefinition def) {
+		if (def instanceof JavaClass) {
+			JavaClass clazz = (JavaClass)def;
+			organize(clazz);
+		}
 	}
 	
 	private void organize(JavaClass clazz) {

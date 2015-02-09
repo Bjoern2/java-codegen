@@ -2,39 +2,80 @@ package com.github.bjoern2.codegen.gen;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.github.bjoern2.codegen.ClassType;
 import com.github.bjoern2.codegen.Generator;
 import com.github.bjoern2.codegen.GeneratorFactory;
 import com.github.bjoern2.codegen.JavaAccessType;
 import com.github.bjoern2.codegen.JavaAnnotation;
 import com.github.bjoern2.codegen.JavaClass;
+import com.github.bjoern2.codegen.JavaDefinition;
 import com.github.bjoern2.codegen.JavaField;
+import com.github.bjoern2.codegen.JavaFile;
 import com.github.bjoern2.codegen.JavaInterface;
 import com.github.bjoern2.codegen.JavaMethod;
 import com.github.bjoern2.codegen.JavaMethodParameter;
 import com.github.bjoern2.codegen.JavaPackage;
 import com.github.bjoern2.codegen.JavaType;
 
-public class JavaMarshaller implements Marshaller<JavaPackage> {
+public class JavaMarshaller implements Marshaller<JavaFile> {
 
 	@Override
-	public void marshal(JavaPackage model, GeneratorFactory factory) {
-		List<JavaClass> clazzes = model.getClazzes();
-		for (JavaClass c : clazzes) {
-			Generator g = factory.newGenerator(model.getName().replace(".", "/") + "/" + model.getName() + ".java");
-			marshalClass(c, g, 0);
-			g.close();
-		}
-		List<JavaInterface> interfaces = model.getInterfaces();
-		for (JavaInterface i : interfaces) {
-			Generator g = factory.newGenerator(model.getName().replace(".", "/") + "/" + model.getName() + ".java");
-			marshalInterface(i, g, 0);
-			g.close();
-		}
-		// TODO Auto-generated method stub
-		
+	public void marshal(JavaFile model, GeneratorFactory factory) {
+		marshalFile(model, factory);
 	}
 	
+	protected void marshalFile(JavaFile model, GeneratorFactory factory) {
+		Generator g = factory.newGenerator(model.getPackage().replace(".", "/") + "/" + model.getDefinition().getName() + ".java");
+		marshalFile(model, g, 0);
+		g.close();
+	}
+	
+	protected void marshalFile(JavaFile model, Generator g, int tabs) {
+		if (model.getComment() != null && !model.getComment().isEmpty()) {
+			String[] commentLines = model.getComment().split("\\r?\\n");
+			g.tab(tabs).write("/*").lineBreak();
+			for (String commentLine : commentLines) {
+				g.tab(tabs).write(" * ").write(commentLine).lineBreak();
+			}
+			g.tab(tabs).write(" */").lineBreak();
+		}
+		
+		if (StringUtils.isNotBlank(model.getPackage())) {
+			g.tab(tabs).write("package " + model.getPackage() + ";").lineBreak();
+			g.lineBreak();
+		}
+		
+		if (model.getImports() != null) {
+			for (JavaType type : model.getImports()) {
+				g.tab(tabs).write("import " + type.getName() + ";").lineBreak();
+			}
+			g.lineBreak();
+		}
+		
+		if (model.getDefinition() != null) {
+			marshalDefinition(model.getDefinition(), g, tabs);
+			g.lineBreak();
+		}
+	}
+	
+	protected void marshalDefinition(JavaDefinition model, Generator g, int tabs) {
+		if (model instanceof JavaClass) {
+			JavaClass clazz = (JavaClass)model;
+			marshalClass(clazz, g, tabs);
+		} else if (model instanceof JavaInterface) {
+			JavaInterface interfaze = (JavaInterface)model;
+			marshalInterface(interfaze, g, tabs);
+		}
+	}
+	
+	protected void marshalPackage(JavaPackage model, Generator g, int tabs) {
+		marshalJavadoc(model.getComment(), g, tabs);
+		
+		marshalAnnotations(model.getAnnotations(), g, tabs);
+		
+	}
 
 	protected void marshalClass(JavaClass model, Generator g, int tabs) {
 		marshalJavadoc(model.getComment(), g, tabs);

@@ -20,7 +20,7 @@ public class AnnotationTest {
 		
 		JavaClass pojo = new JavaClassImpl();
 		pojo.setName("Address");
-		file.setClazz(pojo);
+		file.setDefinition(pojo);
 		
 		
 		JavaAnnotation anRootElement = new JavaAnnotationImpl();
