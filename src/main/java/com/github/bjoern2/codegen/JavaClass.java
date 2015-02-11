@@ -55,6 +55,10 @@ public interface JavaClass extends JavaDefinition, GeneratesCode {
 	
 	void setImplementsFrom(List<JavaType> type);
 	
+	List<JavaConstructor> getConstructors();
+	
+	void setConstructors(List<JavaConstructor> constructors);
+	
 	List<JavaMethod> getMethods();
 	
 	void setMethods(List<JavaMethod> methods);

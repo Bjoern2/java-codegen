@@ -4,6 +4,6 @@ public interface HasComment {
 	
 	String getComment();
 	
-	void setComment();
+	void setComment(String comment);
 	
 }

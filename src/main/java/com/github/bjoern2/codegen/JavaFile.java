@@ -17,7 +17,7 @@ package com.github.bjoern2.codegen;
 
 import java.util.List;
 
-public interface JavaFile extends GeneratesCode {
+public interface JavaFile extends HasComment, GeneratesCode {
 
 	String getPackage();
 
@@ -30,9 +30,5 @@ public interface JavaFile extends GeneratesCode {
 	JavaDefinition getDefinition();
 	
 	void setDefinition(JavaDefinition definition);
-
-	String getComment();
-	
-	void setComment(String comment);
 	
 }

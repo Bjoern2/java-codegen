@@ -17,7 +17,7 @@ package com.github.bjoern2.codegen;
 
 import java.util.List;
 
-public interface JavaMethod extends HasAnnotations, GeneratesCode {
+public interface JavaMethod extends HasAnnotations, HasAccessType, HasComment, GeneratesCode {
 	
 	ClassType getType();
 	
@@ -50,10 +50,6 @@ public interface JavaMethod extends HasAnnotations, GeneratesCode {
 	boolean isNative();
 	
 	void setNative(boolean _native);
-
-	JavaAccessType getAccessType(); 
-	
-	void setAccessType(JavaAccessType type);
 	
 	JavaType getReturnType();
 	
@@ -70,9 +66,5 @@ public interface JavaMethod extends HasAnnotations, GeneratesCode {
 	String getBody();
 	
 	void setBody(String body);
-	
-	String getComment();
-	
-	void setComment(String comment);
 	
 }

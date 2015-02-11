@@ -16,7 +16,7 @@
 package com.github.bjoern2.codegen;
 
 
-public interface JavaField extends HasAnnotations, GeneratesCode {
+public interface JavaField extends HasAnnotations, HasAccessType, GeneratesCode {
 	
 	void setFinal(boolean _final);
 
@@ -37,10 +37,6 @@ public interface JavaField extends HasAnnotations, GeneratesCode {
 	void setName(String name);
 
 	String getName();
-
-	JavaAccessType getAccessType();
-
-	void setAccessType(JavaAccessType accessType);
 	
 	boolean isStatic();
 	

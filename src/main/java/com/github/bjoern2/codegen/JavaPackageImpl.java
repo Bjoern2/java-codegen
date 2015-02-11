@@ -37,12 +37,11 @@ public class JavaPackageImpl implements JavaPackage {
 
 	@Override
 	public String getComment() {
-		// TODO Auto-generated method stub
 		return comment;
 	}
 
 	@Override
-	public void setComment() {
+	public void setComment(String comment) {
 		this.comment = comment;
 	}
 

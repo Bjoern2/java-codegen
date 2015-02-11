@@ -33,6 +33,7 @@ public class JavaClassImpl implements JavaClass {
 	private List<JavaType> implementsFrom;
 	
 	private List<JavaField> fields;
+	private List<JavaConstructor> constructors;
 	private List<JavaMethod> methods;
 	
 	@Override
@@ -230,6 +231,16 @@ public class JavaClassImpl implements JavaClass {
 	@Override
 	public void setStrictfp(boolean _strictfp) {
 		this._strictfp = _strictfp;
+	}
+
+	@Override
+	public List<JavaConstructor> getConstructors() {
+		return constructors;
+	}
+
+	@Override
+	public void setConstructors(List<JavaConstructor> constructors) {
+		this.constructors = constructors;
 	}
 
 }

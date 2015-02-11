@@ -17,13 +17,11 @@ package com.github.bjoern2.codegen;
 
 import java.util.List;
 
-public interface JavaConstructor extends HasAnnotations, GeneratesCode {
+public interface JavaConstructor extends HasAccessType, HasAnnotations, HasComment, GeneratesCode {
 	
 	String getName();
 	
 	void setName(String name);
-	
-	void setAccessType(JavaAccessType type);
 	
 	List<JavaMethodParameter> getParameters();
 	
@@ -36,9 +34,5 @@ public interface JavaConstructor extends HasAnnotations, GeneratesCode {
 	String getBody();
 	
 	void setBody(String body);
-	
-	String getComment();
-	
-	void setComment(String comment);
 	
 }
