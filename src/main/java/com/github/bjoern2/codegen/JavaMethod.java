@@ -67,4 +67,8 @@ public interface JavaMethod extends HasAnnotations, HasAccessType, HasComment, G
 	
 	void setBody(String body);
 	
+	Object getDefaultValue();
+	
+	void setDefaultValue(String value);
+	
 }

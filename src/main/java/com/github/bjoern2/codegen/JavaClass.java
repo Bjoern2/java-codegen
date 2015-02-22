@@ -17,15 +17,11 @@ package com.github.bjoern2.codegen;
 
 import java.util.List;
 
-public interface JavaClass extends JavaDefinition, GeneratesCode {
+public interface JavaClass extends JavaDefinition, GeneratesCode, HasMethods, HasAnnotations, HasComment {
 
 	void setType(ClassType type);
 	
 	ClassType getType();
-	
-	List<JavaAnnotation> getAnnotations();
-	
-	void setAnnotations(List<JavaAnnotation> annotations);
 	
 	JavaAccessType getAccessType();
 	
@@ -43,10 +39,6 @@ public interface JavaClass extends JavaDefinition, GeneratesCode {
 	
 	void setStrictfp(boolean _strictfp);
 	
-	String getName();
-	
-	void setName(String name);
-	
 	JavaType getExtendsFrom();
 	
 	void setExtendsFrom(JavaType type);
@@ -59,16 +51,8 @@ public interface JavaClass extends JavaDefinition, GeneratesCode {
 	
 	void setConstructors(List<JavaConstructor> constructors);
 	
-	List<JavaMethod> getMethods();
-	
-	void setMethods(List<JavaMethod> methods);
-	
 	List<JavaField> getFields();
 	
 	void setFields(List<JavaField> fields);
-	
-	String getComment();
-	
-	void setComment(String comment);
 	 
 }

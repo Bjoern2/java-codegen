@@ -34,6 +34,8 @@ public class JavaMethodImpl implements JavaMethod {
 	private String body = "// TODO Auto-generated method stub";
 	private String comment;
 	private boolean _strictfp;
+	private Object defaultValue;
+	
 	
 	@Override
 	public void setName(String name) {
@@ -277,6 +279,17 @@ public class JavaMethodImpl implements JavaMethod {
 	@Override
 	public JavaAccessType getAccessType() {
 		return accessType;
+	}
+
+	@Override
+	public Object getDefaultValue() {
+		return defaultValue;
+	}
+
+	@Override
+	public void setDefaultValue(String value) {
+		this.defaultValue = value;
+		
 	}
 
 }

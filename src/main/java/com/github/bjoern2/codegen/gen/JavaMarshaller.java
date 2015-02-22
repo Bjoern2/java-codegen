@@ -9,6 +9,7 @@ import com.github.bjoern2.codegen.Generator;
 import com.github.bjoern2.codegen.GeneratorFactory;
 import com.github.bjoern2.codegen.JavaAccessType;
 import com.github.bjoern2.codegen.JavaAnnotation;
+import com.github.bjoern2.codegen.JavaAnnotationDef;
 import com.github.bjoern2.codegen.JavaClass;
 import com.github.bjoern2.codegen.JavaDefinition;
 import com.github.bjoern2.codegen.JavaField;
@@ -67,6 +68,12 @@ public class JavaMarshaller implements Marshaller<JavaFile> {
 		} else if (model instanceof JavaInterface) {
 			JavaInterface interfaze = (JavaInterface)model;
 			marshalInterface(interfaze, g, tabs);
+		} else if (model instanceof JavaAnnotationDef) {
+			JavaAnnotationDef anno = (JavaAnnotationDef)model;
+			marshalAnnotationDef(anno, g, tabs);
+		} else if (model instanceof JavaPackage) {
+			JavaPackage pack = (JavaPackage)model;
+			marshalPackage(pack, g, tabs);
 		}
 	}
 	
@@ -166,6 +173,35 @@ public class JavaMarshaller implements Marshaller<JavaFile> {
 		g.tab(tabs).write("}").lineBreak();
 	}
 
+	protected void marshalAnnotationDef(JavaAnnotationDef model, Generator g, int tabs) {
+		marshalJavadoc(model.getComment(), g, tabs);
+		
+		marshalAnnotations(model.getAnnotations(), g, tabs);
+		
+		// public class Foo {
+		g.tab(tabs);
+		if (model.getAccessType() != null && model.getAccessType() != JavaAccessType.PACKAGE) {
+			g.write(model.getAccessType().name().toLowerCase());
+			g.write(" ");
+		}
+		
+		g.write("interface ");
+		
+		g.write(model.getName() + " {");
+		g.lineBreak();
+		g.lineBreak();
+		
+		if (model.getMethods() != null) {
+			for (JavaMethod method : model.getMethods()) {
+				//method.write(tabs + 1, g);
+				marshalMethod(method, ClassType.ANNOTATION, g, tabs + 1);
+				g.lineBreak();
+			}
+		}
+		
+		g.tab(tabs).write("}").lineBreak();
+	}
+	
 	
 	protected void marshalMethod(JavaMethod m, ClassType type, Generator g, int tabs) {
 		marshalJavadoc(m.getComment(), g, tabs);
